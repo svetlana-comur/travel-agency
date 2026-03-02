@@ -11,7 +11,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// lk
 
 app.UseHttpsRedirection();
 
