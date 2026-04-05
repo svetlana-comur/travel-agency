@@ -6,7 +6,7 @@ namespace travel_agency.Api.Controller
 {
     [Route("api/user")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private static List<User> _users = new();
         private static int _nextId = 1;
