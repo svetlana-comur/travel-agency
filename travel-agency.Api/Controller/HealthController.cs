@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace travel_agency.Api.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/health")]
     [ApiController]
     public class HealthController : ControllerBase
     {
-        [HttpGet("ping")]
+        [HttpGet("status")]
         public IActionResult Ping()
         {
-            return Ok("pong");
+            return Ok("Healthy");
         }
     }
 }

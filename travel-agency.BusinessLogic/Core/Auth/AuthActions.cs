@@ -8,9 +8,25 @@ namespace travel_agency.BusinessLogic.Core.Auth
 {
     internal class AuthActions
     {
-        public ISession GetSessionBL()
+        internal bool ValidateLogin(UserAuthAction data)
         {
-            return new SessionBL();
+            UserData? local;
+            using (var db = new UserContext())
+            {
+                local = db.Users.FirstOrDefault(
+                        u => u.UserName == data.Login
+                             && u.Password == data.Password);
+            }
+
+
+            if (string.IsNullOrEmpty(data.Login) && string.IsNullOrEmpty(data.Password))
+                return false;
+            return true;
+        }
+
+        internal string? GenToken(UserAuthAction data)
+        {
+            return "TOKEN";
         }
     }
 }
