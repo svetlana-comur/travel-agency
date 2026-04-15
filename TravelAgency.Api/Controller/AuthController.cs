@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using travel_agency.Api.Domain;
+using TravelAgency.Api.Domain;
 
-namespace travel_agency.Api.Controller
+namespace TravelAgency.Api.Controller
 {
     [Route("api/user")]
     [ApiController]

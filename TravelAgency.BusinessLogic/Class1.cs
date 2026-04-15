@@ -1,4 +1,4 @@
-﻿namespace travel_agency.BusinessLogic
+namespace TravelAgency.BusinessLogic
 {
     public class Class1
     {

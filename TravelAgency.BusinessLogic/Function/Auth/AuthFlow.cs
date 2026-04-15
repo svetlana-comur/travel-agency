@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using travel_agency.BusinessLogic.Core.Auth;
+using TravelAgency.BusinessLogic.Core.Auth;
 
-namespace travel_agency.BusinessLogic.Function.Auth
+namespace TravelAgency.BusinessLogic.Function.Auth
 {
     internal class AuthFlow : AuthActions, IAuthActions
     {
