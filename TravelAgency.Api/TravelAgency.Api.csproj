@@ -4,11 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>travel_agency.Api</RootNamespace>
+    <RootNamespace>TravelAgency.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\TravelAgency.BusinessLogic\TravelAgency.BusinessLogic.csproj" />
+  </ItemGroup>
+	
 </Project>

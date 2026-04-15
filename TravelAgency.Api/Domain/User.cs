@@ -1,4 +1,4 @@
-﻿namespace travel_agency.Api.Domain
+namespace TravelAgency.Api.Domain
 {
     public class User
     {
