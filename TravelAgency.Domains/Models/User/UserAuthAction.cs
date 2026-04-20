@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TravelAgency.Domains.Models.User
 {
-    internal class UserAuthAction
+    public class UserAuthAction
     {
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
 }
