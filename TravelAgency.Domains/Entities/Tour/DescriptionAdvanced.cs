@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TravelAgency.Domains.Entities.Tour
 {
-    internal class DescriptionAdvanced
+    public class DescriptionAdvanced
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     }
 }

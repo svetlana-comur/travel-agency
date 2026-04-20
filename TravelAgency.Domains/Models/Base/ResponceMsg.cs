@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TravelAgency.Domains.Models.Base
 {
-    internal class ResponceMsg
+    public class ResponceMsg
     {
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
     }
 }
