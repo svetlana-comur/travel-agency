@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAgency.DataAccess.Context;
+using TravelAgency.Domains.Entities.User;
+using TravelAgency.Domains.Models.User; 
 
 namespace TravelAgency.BusinessLogic.Core.Auth
 {

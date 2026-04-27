@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.BusinessLogic.Core.Auth;
+using TravelAgency.BusinessLogic.Interface; 
+using TravelAgency.Domains.Models.User; 
 
 namespace TravelAgency.BusinessLogic.Function.Auth
 {
-    internal class AuthFlow : AuthActions, IAuthActions
+    public class AuthFlow : AuthActions, IAuthActions
     {
         public object? LoginActionFlow(UserAuthAction auth)
         {
