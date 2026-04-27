@@ -9,7 +9,7 @@ using TravelAgency.Domains.Models.User;
 
 namespace TravelAgency.BusinessLogic.Core.Auth
 {
-    internal class AuthActions
+    public class AuthActions
     {
         internal bool ValidateLogin(UserAuthAction data)
         {

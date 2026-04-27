@@ -1,72 +1,37 @@
+using TravelAgency.BusinessLogic.Interface;
+using TravelAgency.Domains.Models.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TravelAgency.Domains;
+using TravelAgency.BusinessLogic;
 
 namespace TravelAgency.Api.Controller
 {
-    [Route("api/user")]
+    [Route("api/session")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private static List<User> _users = new();
-        private static int _nextId = 1;
 
-        [HttpGet("all")]
-        public IActionResult GetAllUsers()
+        internal IAuthActions _auth;
+        public AuthController()
         {
-            return Ok(_users);
+            var bl = new BusinessLogic.BusinessLogic();
+            _auth = bl.GetAuthActions();
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetUserById(int id)
-        {
-            var user = _users.FirstOrDefault(u => u.Id == id);
 
-            if (user == null)
-            {
-                return NotFound(new { Message = $"User with ID {id} not found" });
-            }
-            return Ok(user);
+        [HttpGet("status")]
+        public IActionResult Get()
+        {
+            return Ok("Session is active");
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        public IActionResult Post([FromBody] UserAuthAction data)
         {
-            user.Id = _nextId++;
-            user.CreatedAt = DateTime.UtcNow;
+            var authStatus = _auth.LoginActionFlow(data);
 
-            _users.Add(user);
-            return Created($"/api/users/{user.Id}", user);
-        }
-        [HttpPut("{id}")]
-
-        public IActionResult UpdateUser(int id, [FromBody] User updatedUser)
-        {
-            var existingUser = _users.FirstOrDefault(u => u.Id == id);
-
-            if (existingUser == null)
-            {
-                return NotFound(new { Message = $"User with ID {id} not found" });
-            }
-
-            existingUser.Username = updatedUser.Username;
-            existingUser.Email = updatedUser.Email;
-
-            return Ok(existingUser);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
-        {
-            var user = _users.FirstOrDefault(u => u.Id == id);
-
-            if (user == null)
-            {
-                return NotFound(new { Message = $"User with ID {id} not found" });
-            }
-            _users.Remove(user);
-
-            return NoContent();
+            string token = "";
+            return Ok(token);
         }
     }
 }
