@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TravelAgency.DataAccess\TravelAgency.DataAccess.csproj" />
+    <ProjectReference Include="..\TravelAgency.Domains\TravelAgency.Domains.csproj" />
+  </ItemGroup>
+
 </Project>

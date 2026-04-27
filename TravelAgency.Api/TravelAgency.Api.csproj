@@ -13,6 +13,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\TravelAgency.BusinessLogic\TravelAgency.BusinessLogic.csproj" />
+	<ProjectReference Include="..\TravelAgency.Domains\TravelAgency.Domains.csproj" />
   </ItemGroup>
 	
 </Project>

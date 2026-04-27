@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TravelAgency.Api.Domain;
+using TravelAgency.Domains;
 
 namespace TravelAgency.Api.Controller
 {
