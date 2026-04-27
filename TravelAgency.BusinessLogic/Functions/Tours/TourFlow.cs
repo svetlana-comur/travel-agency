@@ -1,4 +1,4 @@
-using TravelAgency.BusinessLogic.Core.Tours;
+using TravelAgency.BusinessLogic.Core.Tour;
 using TravelAgency.BusinessLogic.Interface;
 using TravelAgency.Domains.Models.Base;
 using TravelAgency.Domains.Models.Tour;

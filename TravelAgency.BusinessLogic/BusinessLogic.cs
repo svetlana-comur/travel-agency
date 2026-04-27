@@ -1,4 +1,4 @@
-using TravelAgency.BusinessLogic.Functions.Auth;
+using TravelAgency.BusinessLogic.Function.Auth;
 using TravelAgency.BusinessLogic.Functions.Tours;
 using TravelAgency.BusinessLogic.Interface;
 
