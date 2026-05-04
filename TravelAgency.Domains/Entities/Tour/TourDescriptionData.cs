@@ -20,5 +20,6 @@ namespace TravelAgency.Domains.Entities.Tour
         [StringLength(200)]
         public string? Description { get; set; }
         public DescriptionAdvanced DescriptionAdvanced { get; set; }
+        public int TourId { get; set; }
     }
 }
