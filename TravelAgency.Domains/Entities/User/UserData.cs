@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,7 +27,7 @@ namespace TravelAgency.Domains.Entities.User
         [Required]
         [StringLength(50)]
         public string Email { get; set; }
-        public string Contacts { get; set; }
+        public string? Contacts { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
