@@ -16,6 +16,6 @@ namespace TravelAgency.Domains.Entities.Tour
         public int Id { get; set; }
         public string Url { get; set; }
         public int TourId { get; set; }
-        public TourData Tour { get; set; }
+        public TourData? Tour { get; set; }
     }
 }

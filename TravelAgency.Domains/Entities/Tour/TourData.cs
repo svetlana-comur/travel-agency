@@ -19,12 +19,12 @@ namespace TravelAgency.Domains.Entities.Tour
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public TourDescriptionData? Description { get; set; }
         public int CategoryId { get; set; }
-        public CategoryData Category { get; set; }
-        public List<TourImgData> Images { get; set; }
+        public CategoryData? Category { get; set; }
+        public List<TourImgData>? Images { get; set; }
         public decimal Price { get; set; }
         public TourStatus Status { get; set; }
     }
