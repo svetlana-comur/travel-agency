@@ -22,6 +22,7 @@ namespace TravelAgency.Domains.Entities.Tour
         public string Name { get; set; }
 
         public TourDescriptionData? Description { get; set; }
+        public int CategoryId { get; set; }
         public CategoryData Category { get; set; }
         public List<TourImgData> Images { get; set; }
         public decimal Price { get; set; }

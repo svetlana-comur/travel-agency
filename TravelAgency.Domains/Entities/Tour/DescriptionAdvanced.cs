@@ -14,5 +14,7 @@ namespace TravelAgency.Domains.Entities.Tour
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         public int Id { get; set; }
+        public int TourDescriptionDataId { get; set; }
+        public TourDescriptionData TourDescriptionData { get; set; }
     }
 }
