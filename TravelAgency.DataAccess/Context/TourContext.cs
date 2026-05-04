@@ -1,6 +1,7 @@
 using TravelAgency.Domains.Entities.Tour;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.DataAccess;
+using TravelAgency.Domains.Entities.User;
 
 namespace TravelAgency.DataAccess.Context
 {
@@ -11,6 +12,7 @@ namespace TravelAgency.DataAccess.Context
         public DbSet<CategoryData> Categories { get; set; }
         public DbSet<TourDescriptionData> Description { get; set; }
         public DbSet<DescriptionAdvanced> DescriptionAdvanced { get; set; }
+        public DbSet<UserData> Users { get; set; }  
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
