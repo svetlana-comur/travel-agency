@@ -3,8 +3,8 @@ using TravelAgency.Domains.Models.User;
 
 namespace TravelAgency.BusinessLogic.Interface
 {
-    public interface IAuthActions
+    public interface IRegisterActions
     {
-        ResponceAction LoginActionFlow(UserAuthAction auth);
+        ResponceAction RegisterActionFlow(UserRegisterDto uReg);
     }
 }

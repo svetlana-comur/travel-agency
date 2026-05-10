@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelAgency.DataAccess.Context;
 using TravelAgency.Domains.Entities.Tour;
 using TravelAgency.Domains.Enums;
 using TravelAgency.Domains.Models.Base;
 using TravelAgency.Domains.Models.Tour;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TravelAgency.BusinessLogic.Core.Tour
+namespace TravelAgency.BusinessLogic.Core.Tours
 {
     public class TourAction
     {
@@ -26,17 +26,17 @@ namespace TravelAgency.BusinessLogic.Core.Tour
 
             foreach (var tour in tData)
             {
-                var tou = new TourDto()
+                var produc = new TourDto()
                 {
                     Id = tour.Id,
                     Name = tour.Name,
                     Description = tour.Description,
-                    Category = tour.Category,
+                    CategoryId = tour.CategoryId,
                     Images = tour.Images,
                     Price = tour.Price
                 };
 
-                tours.Add(tou);
+                tours.Add(produc);
             }
 
             return tours;
@@ -56,7 +56,7 @@ namespace TravelAgency.BusinessLogic.Core.Tour
                 Id = tData.Id,
                 Name = tData.Name,
                 Description = tData.Description,
-                Category = tData.Category,
+                CategoryId = tData.CategoryId,
                 Images = tData.Images,
                 Price = tData.Price
             };
@@ -73,7 +73,7 @@ namespace TravelAgency.BusinessLogic.Core.Tour
 
                 tData.Name = tour.Name;
                 tData.Description = tour.Description;
-                tData.Category = tour.Category;
+                tData.CategoryId = tour.CategoryId;
                 tData.Images = tour.Images;
                 tData.Price = tour.Price;
 
@@ -110,23 +110,23 @@ namespace TravelAgency.BusinessLogic.Core.Tour
                 return new ResponceMsg
                 {
                     IsSuccess = false,
-                    Message = "A tour with this Name already exist in our system."
+                    Message = "An tour with this Name already exist in our system."
                 };
             }
 
-            var tLocalData = new TourData
+            var pLocalData = new TourData
             {
                 Name = tour.Name,
                 Price = tour.Price,
                 Description = tour.Description,
-                Category = tour.Category,
+                CategoryId = tour.CategoryId,
                 Images = tour.Images,
                 Status = TourStatus.Active
             };
 
             using (var db = new TourContext())
             {
-                db.Tours.Add(tLocalData);
+                db.Tours.Add(pLocalData);
                 db.SaveChanges();
             }
 
