@@ -1,8 +1,8 @@
-using TravelAgency.BusinessLogic.Interface;
-using TravelAgency.Domains.Models.User;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.BusinessLogic;
+using TravelAgency.BusinessLogic.Interface;
+using TravelAgency.Domains.Models.User;
 
 namespace TravelAgency.Api.Controller
 {
@@ -10,28 +10,31 @@ namespace TravelAgency.Api.Controller
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly IAuthActions _auth;
 
-        internal IAuthActions _auth;
         public AuthController()
         {
             var bl = new BusinessLogic.BusinessLogic();
             _auth = bl.GetAuthActions();
         }
 
-
         [HttpGet("status")]
-        public IActionResult Get()
+        [AllowAnonymous]
+        public IActionResult Status()
         {
             return Ok("Session is active");
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] UserAuthAction data)
+        [HttpPost("auth")]
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] UserAuthAction data)
         {
-            var authStatus = _auth.LoginActionFlow(data);
+            var result = _auth.LoginActionFlow(data);
 
-            string token = "";
-            return Ok(token);
+            if (!result.IsSuccess)
+                return Unauthorized(result.Message);
+
+            return Ok(new { token = result.Message });
         }
     }
 }

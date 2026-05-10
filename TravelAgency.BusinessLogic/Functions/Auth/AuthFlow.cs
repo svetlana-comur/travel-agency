@@ -1,20 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelAgency.BusinessLogic.Core.Auth;
-using TravelAgency.BusinessLogic.Interface; 
-using TravelAgency.Domains.Models.User; 
+using TravelAgency.BusinessLogic.Interface;
+using TravelAgency.Domains.Models.Base;
+using TravelAgency.Domains.Models.User;
 
-namespace TravelAgency.BusinessLogic.Function.Auth
+namespace TravelAgency.BusinessLogic.Functions.Auth
 {
     public class AuthFlow : AuthActions, IAuthActions
     {
-        public object? LoginActionFlow(UserAuthAction auth)
+        public ResponceAction LoginActionFlow(UserAuthAction auth)
         {
-            var isValid = ValidateLogin(auth);
-            return isValid ? GenToken(auth) : null;
+            var user = ValidateLoginExecution(auth);
+            if (user == null)
+            {
+                return new ResponceAction
+                {
+                    IsSuccess = false,
+                    Message = "Invalid username or password."
+                };
+            }
+
+            var token = GenerateUserToken(user);
+
+            return new ResponceAction
+            {
+                IsSuccess = true,
+                Message = token,
+                Id = user.Id
+            };
         }
     }
 }
