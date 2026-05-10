@@ -14,7 +14,7 @@ namespace TravelAgency.Domains.Models.Tour
         public string Name { get; set; }
 
         public TourDescriptionData? Description { get; set; }
-        public CategoryData Category { get; set; }
+        public int CategoryId { get; set; }
         public List<TourImgData> Images { get; set; }
         public decimal Price { get; set; }
     }

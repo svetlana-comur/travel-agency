@@ -12,7 +12,6 @@ namespace TravelAgency.DataAccess.Context
         public DbSet<CategoryData> Categories { get; set; }
         public DbSet<TourDescriptionData> Description { get; set; }
         public DbSet<DescriptionAdvanced> DescriptionAdvanced { get; set; }
-        public DbSet<UserData> Users { get; set; }  
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

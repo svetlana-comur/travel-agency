@@ -1,16 +1,17 @@
+using TravelAgency.Api.Filters;
 using TravelAgency.BusinessLogic.Interface;
 using TravelAgency.Domains.Models.Tour;
-using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TravelAgency.Api.Controller
 {
     [Route("api/tour")]
     [ApiController]
+    [Authorize]
     public class TourController : ControllerBase
     {
-        private ITour _tour;
+        private readonly ITour _tour;
 
         public TourController()
         {
@@ -19,19 +20,20 @@ namespace TravelAgency.Api.Controller
         }
 
         [HttpGet("getAll")]
+        [AllowAnonymous]
         public IActionResult GetAllTours()
         {
-            var tours = _tour.GetAllToursAction();
-            return Ok(tours);
+            return Ok(_tour.GetAllToursAction());
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult Get(int id)
         {
-            var tour = _tour.GetTourByIdAction(id);
-            return Ok(tour);
+            return Ok(_tour.GetTourByIdAction(id));
         }
 
+        [AdminMod]
         [HttpPost]
         public IActionResult Create([FromBody] TourDto tour)
         {
@@ -39,6 +41,7 @@ namespace TravelAgency.Api.Controller
             return Ok(status);
         }
 
+        [AdminMod]
         [HttpPut]
         public IActionResult Update([FromBody] TourDto tour)
         {
@@ -46,7 +49,8 @@ namespace TravelAgency.Api.Controller
             return Ok(status);
         }
 
-        [HttpDelete("id")]
+        [AdminMod]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var status = _tour.ResponceTourDeleteAction(id);

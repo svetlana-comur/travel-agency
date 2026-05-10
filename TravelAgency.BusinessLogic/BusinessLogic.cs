@@ -1,6 +1,6 @@
-using TravelAgency.BusinessLogic.Function.Auth;
-using TravelAgency.BusinessLogic.Functions.Tours;
 using TravelAgency.BusinessLogic.Interface;
+using TravelAgency.BusinessLogic.Functions.Auth;
+using TravelAgency.BusinessLogic.Functions.Tours;
 
 namespace TravelAgency.BusinessLogic
 {
@@ -13,9 +13,16 @@ namespace TravelAgency.BusinessLogic
             return new AuthFlow();
         }
 
+        public IRegisterActions GetRegisterActions()
+        {
+            return new RegisterFlow();
+        }
+
         public ITour GetTourActions()
         {
             return new TourFlow();
         }
+
+
     }
 }
