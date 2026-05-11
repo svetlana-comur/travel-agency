@@ -27,12 +27,16 @@ namespace TravelAgency.Domains.Entities.User
         [Required]
         [StringLength(50)]
         public string Email { get; set; }
-        public string? Contacts { get; set; }
+
+
+        public string Contacts { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         public DateTime DOB { get; set; }
 
         public GenderTypes Gender { get; set; }
+
+        public UserRole Role { get; set; }
     }
 }
