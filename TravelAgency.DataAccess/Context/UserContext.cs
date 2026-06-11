@@ -1,4 +1,4 @@
-﻿using TravelAgency.Domains.Entities.User;
+using TravelAgency.Domains.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace TravelAgency.DataAccess.Context
@@ -7,6 +7,10 @@ namespace TravelAgency.DataAccess.Context
     {
 
         public DbSet<UserData> Users { get; set; }
+
+        public DbSet<FavoriteData> Favorites { get; set; }
+
+        public DbSet<EmailToken> EmailTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

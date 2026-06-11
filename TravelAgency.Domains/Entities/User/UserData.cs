@@ -38,5 +38,7 @@ namespace TravelAgency.Domains.Entities.User
         public GenderTypes Gender { get; set; }
 
         public UserRole Role { get; set; }
+
+        public bool IsEmailConfirmed { get; set; } = false;
     }
 }
