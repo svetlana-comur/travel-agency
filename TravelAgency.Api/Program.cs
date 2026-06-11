@@ -1,17 +1,26 @@
-using TravelAgency.BusinessLogic.Structure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using TravelAgency.BusinessLogic.Structure;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var stripeKey = builder.Configuration["Stripe:SecretKey"];
+StripeConfiguration.ApiKey = stripeKey;
 
 TravelAgency.DataAccess.DbSession.ConnectionStrings =
     builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddEndpointsApiExplorer();
 
 // Swagger configurat sa accepte token JWT (buton "Authorize" in UI)
@@ -43,7 +52,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// JWT Bearer authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

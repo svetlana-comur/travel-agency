@@ -1,13 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using TravelAgency.DataAccess.Context;
 using TravelAgency.Domains.Entities.Tour;
 using TravelAgency.Domains.Enums;
 using TravelAgency.Domains.Models.Base;
 using TravelAgency.Domains.Models.Tour;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelAgency.BusinessLogic.Core.Tours
 {
@@ -15,125 +11,173 @@ namespace TravelAgency.BusinessLogic.Core.Tours
     {
         protected List<TourDto> ExecuteGetAllToursAction()
         {
-            var tours = new List<TourDto>();
-            List<TourData> tData;
+            using var db = new TourContext();
 
-            using (var db = new TourContext())
+            var tData = db.Tours
+                .Include(x => x.Images)
+                .Include(x => x.Category)
+                .ToList();
+
+            return tData.Select(tour => new TourDto
             {
-                //TODO: Add InerJoin to select on D3 and D4!
-                tData = db.Tours.ToList();
-            }
+                Id = tour.Id,
+                Name = tour.Name,
 
-            foreach (var tour in tData)
-            {
-                var produc = new TourDto()
-                {
-                    Id = tour.Id,
-                    Name = tour.Name,
-                    Description = tour.Description,
-                    CategoryId = tour.CategoryId,
-                    Images = tour.Images,
-                    Price = tour.Price
-                };
+                ShortDescription = tour.ShortDescription,
+                FullDescription = tour.FullDescription,
 
-                tours.Add(produc);
-            }
+                CategoryId = tour.CategoryId,
+                CategoryName = tour.Category?.Name,
 
-            return tours;
+                Images = tour.Images?
+                    .Select(i => i.Url)
+                    .ToList() ?? new List<string>(),
+
+                Price = tour.Price,
+                Status = tour.Status.ToString()
+            }).ToList();
         }
+
         protected TourDto GetTourDataByIdAction(int id)
         {
+            using var db = new TourContext();
 
-            TourData tData;
-            using (var db = new TourContext())
-            {
-                //TODO: Add InerJoin to select on D3 and D4!
-                tData = db.Tours.FirstOrDefault(x => x.Id == id);
-            }
+            var tour = db.Tours
+                .Include(x => x.Images)
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == id);
 
-            return new TourDto()
+            if (tour == null) return null;
+
+            return new TourDto
             {
-                Id = tData.Id,
-                Name = tData.Name,
-                Description = tData.Description,
-                CategoryId = tData.CategoryId,
-                Images = tData.Images,
-                Price = tData.Price
+                Id = tour.Id,
+                Name = tour.Name,
+
+                ShortDescription = tour.ShortDescription,
+                FullDescription = tour.FullDescription,
+
+                CategoryId = tour.CategoryId,
+                CategoryName = tour.Category?.Name,
+
+                Images = tour.Images?
+                    .Select(i => i.Url)
+                    .ToList() ?? new List<string>(),
+
+                Price = tour.Price,
+                Status = tour.Status.ToString()
             };
         }
-        protected ResponceMsg ExecuteTourUpdateAction(TourDto tour)
-        {
-            using (var db = new TourContext())
-            {
-                var tData = db.Tours.FirstOrDefault(x => x.Id == tour.Id);
-                if (tData == null)
-                {
-                    return new ResponceMsg { IsSuccess = false, Message = "Tour not found." };
-                }
 
-                tData.Name = tour.Name;
-                tData.Description = tour.Description;
-                tData.CategoryId = tour.CategoryId;
-                tData.Images = tour.Images;
-                tData.Price = tour.Price;
-
-                db.SaveChanges();
-            }
-
-            return new ResponceMsg { IsSuccess = true, Message = "Tour updated successfully." };
-        }
-        protected ResponceMsg ExecuteTourDeleteAction(int id)
-        {
-            using (var db = new TourContext())
-            {
-                var tData = db.Tours.FirstOrDefault(x => x.Id == id);
-                if (tData == null)
-                {
-                    return new ResponceMsg { IsSuccess = false, Message = "Tour not found." };
-                }
-                db.Tours.Remove(tData);
-                db.SaveChanges();
-            }
-            return new ResponceMsg { IsSuccess = true, Message = "Tour deleted successfully." };
-        }
         protected ResponceMsg ExecuteTourCreateAction(TourDto tour)
         {
-            TourData tData;
-            using (var db = new TourContext())
-            {
-                tData = db.Tours.FirstOrDefault(
-                    x => x.Name.Equals(tour.Name));
-            }
+            using var db = new TourContext();
 
-            if (tData != null)
+            var exists = db.Tours.Any(x => x.Name == tour.Name);
+
+            if (exists)
             {
                 return new ResponceMsg
                 {
                     IsSuccess = false,
-                    Message = "An tour with this Name already exist in our system."
+                    Message = "Tour with this name already exists."
                 };
             }
 
-            var pLocalData = new TourData
+            var entity = new TourData
             {
                 Name = tour.Name,
                 Price = tour.Price,
-                Description = tour.Description,
                 CategoryId = tour.CategoryId,
-                Images = tour.Images,
-                Status = TourStatus.Active
+                Status = TourStatus.Active,
+
+                ShortDescription = tour.ShortDescription,
+                FullDescription = tour.FullDescription,
+
+                Images = tour.Images?.Select(url => new TourImgData
+                {
+                    Url = url
+                }).ToList()
             };
 
-            using (var db = new TourContext())
-            {
-                db.Tours.Add(pLocalData);
-                db.SaveChanges();
-            }
+            db.Tours.Add(entity);
+            db.SaveChanges();
 
             return new ResponceMsg
             {
                 IsSuccess = true,
-                Message = "Tour was succesfully added."
+                Message = "Tour created successfully."
+            };
+        }
+
+        protected ResponceMsg ExecuteTourUpdateAction(TourDto tour)
+        {
+            using var db = new TourContext();
+
+            var entity = db.Tours
+                .Include(x => x.Images)
+                .FirstOrDefault(x => x.Id == tour.Id);
+
+            if (entity == null)
+            {
+                return new ResponceMsg
+                {
+                    IsSuccess = false,
+                    Message = "Tour not found."
+                };
+            }
+
+            entity.Name = tour.Name;
+            entity.Price = tour.Price;
+            entity.CategoryId = tour.CategoryId;
+
+            entity.ShortDescription = tour.ShortDescription;
+            entity.FullDescription = tour.FullDescription;
+
+            entity.Images?.Clear();
+
+            if (tour.Images != null)
+            {
+                foreach (var img in tour.Images)
+                {
+                    entity.Images.Add(new TourImgData
+                    {
+                        Url = img
+                    });
+                }
+            }
+
+            db.SaveChanges();
+
+            return new ResponceMsg
+            {
+                IsSuccess = true,
+                Message = "Tour updated successfully."
+            };
+        }
+
+        protected ResponceMsg ExecuteTourDeleteAction(int id)
+        {
+            using var db = new TourContext();
+
+            var entity = db.Tours.FirstOrDefault(x => x.Id == id);
+
+            if (entity == null)
+            {
+                return new ResponceMsg
+                {
+                    IsSuccess = false,
+                    Message = "Tour not found."
+                };
+            }
+
+            db.Tours.Remove(entity);
+            db.SaveChanges();
+
+            return new ResponceMsg
+            {
+                IsSuccess = true,
+                Message = "Tour deleted successfully."
             };
         }
     }
