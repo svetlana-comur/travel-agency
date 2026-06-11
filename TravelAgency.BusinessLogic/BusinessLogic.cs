@@ -1,4 +1,5 @@
 using TravelAgency.BusinessLogic.Functions.Auth;
+using TravelAgency.BusinessLogic.Functions.Booking;
 using TravelAgency.BusinessLogic.Functions.Hotel;
 using TravelAgency.BusinessLogic.Functions.Package;
 using TravelAgency.BusinessLogic.Functions.Place;
@@ -69,6 +70,11 @@ namespace TravelAgency.BusinessLogic
         public IFavorite GetFavoriteActions()
         {
             return new FavoriteFlow();
+        }
+
+        public IBooking GetBookingFlow()
+        {
+            return new BookingFlow();
         }
     }
 }
