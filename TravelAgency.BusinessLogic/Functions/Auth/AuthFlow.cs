@@ -10,6 +10,7 @@ namespace TravelAgency.BusinessLogic.Functions.Auth
         public ResponceAction LoginActionFlow(UserAuthAction auth)
         {
             var user = ValidateLoginExecution(auth);
+
             if (user == null)
             {
                 return new ResponceAction
@@ -28,5 +29,17 @@ namespace TravelAgency.BusinessLogic.Functions.Auth
                 Id = user.Id
             };
         }
+
+        public ResponceMsg SendEmailConfirmationCode(string email)
+            => SendEmailConfirmationCode(email);
+
+        public ResponceMsg SendResetPasswordCode(string email)
+            => SendResetPasswordCode(email);
+
+        public ResponceMsg ConfirmEmail(ConfirmEmailDto dto)
+            => ExecuteConfirmEmail(dto.Email, dto.Code);
+
+        public ResponceMsg ResetPassword(ResetPasswordDto dto)
+            => ExecuteResetPassword(dto.Email, dto.Code, dto.NewPassword);
     }
 }

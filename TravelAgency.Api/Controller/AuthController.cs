@@ -36,5 +36,37 @@ namespace TravelAgency.Api.Controller
 
             return Ok(new { token = result.Message });
         }
+
+        [HttpPost("register-send-code")]
+        [AllowAnonymous]
+        public IActionResult RegisterSendCode([FromBody] string email)
+        {
+            var result = _auth.SendEmailConfirmationCode(email);
+            return Ok(result);
+        }
+
+        [HttpPost("confirm-email")]
+        [AllowAnonymous]
+        public IActionResult ConfirmEmail([FromBody] ConfirmEmailDto dto)
+        {
+            var result = _auth.ConfirmEmail(dto);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpPost("forgot-password")]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword([FromBody] string email)
+        {
+            var result = _auth.SendResetPasswordCode(email);
+            return Ok(result);
+        }
+
+        [HttpPost("reset-password")]
+        [AllowAnonymous]
+        public IActionResult ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = _auth.ResetPassword(dto);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
     }
 }
