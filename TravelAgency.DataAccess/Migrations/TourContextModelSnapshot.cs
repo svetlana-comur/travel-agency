@@ -31,14 +31,18 @@ namespace TravelAgency.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.DescriptionAdvanced", b =>
+            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourBookingData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,15 +50,42 @@ namespace TravelAgency.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TourDescriptionDataId")
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartureCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Guests")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TourDescriptionDataId")
-                        .IsUnique();
+                    b.HasIndex("TourId");
 
-                    b.ToTable("DescriptionAdvanced");
+                    b.ToTable("TourBookings");
                 });
 
             modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourData", b =>
@@ -71,6 +102,10 @@ namespace TravelAgency.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FullDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -78,6 +113,11 @@ namespace TravelAgency.DataAccess.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -90,30 +130,6 @@ namespace TravelAgency.DataAccess.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Tours");
-                });
-
-            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourDescriptionData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId")
-                        .IsUnique();
-
-                    b.ToTable("Description");
                 });
 
             modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourImgData", b =>
@@ -138,15 +154,15 @@ namespace TravelAgency.DataAccess.Migrations
                     b.ToTable("TourImgs");
                 });
 
-            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.DescriptionAdvanced", b =>
+            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourBookingData", b =>
                 {
-                    b.HasOne("TravelAgency.Domains.Entities.Tour.TourDescriptionData", "TourDescriptionData")
-                        .WithOne("DescriptionAdvanced")
-                        .HasForeignKey("TravelAgency.Domains.Entities.Tour.DescriptionAdvanced", "TourDescriptionDataId")
+                    b.HasOne("TravelAgency.Domains.Entities.Tour.TourData", "Tour")
+                        .WithMany()
+                        .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TourDescriptionData");
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourData", b =>
@@ -158,17 +174,6 @@ namespace TravelAgency.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourDescriptionData", b =>
-                {
-                    b.HasOne("TravelAgency.Domains.Entities.Tour.TourData", "Tour")
-                        .WithOne("Description")
-                        .HasForeignKey("TravelAgency.Domains.Entities.Tour.TourDescriptionData", "TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourImgData", b =>
@@ -189,14 +194,7 @@ namespace TravelAgency.DataAccess.Migrations
 
             modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourData", b =>
                 {
-                    b.Navigation("Description");
-
                     b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("TravelAgency.Domains.Entities.Tour.TourDescriptionData", b =>
-                {
-                    b.Navigation("DescriptionAdvanced");
                 });
 #pragma warning restore 612, 618
         }

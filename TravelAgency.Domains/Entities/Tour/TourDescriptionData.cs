@@ -19,7 +19,6 @@ namespace TravelAgency.Domains.Entities.Tour
         [Required]
         [StringLength(200)]
         public string? Description { get; set; }
-        public DescriptionAdvanced? DescriptionAdvanced { get; set; }
         public int TourId { get; set; }
         public TourData? Tour { get; set; }
     }
